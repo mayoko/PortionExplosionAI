@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.1)
+project(PortionExplosionSrc)
+add_subdirectory(state)
+# add_subdirectory(action)
+add_executable(Main main.cpp)
+# add_link_libraries(Main State Action)
+target_link_libraries(Main State)
