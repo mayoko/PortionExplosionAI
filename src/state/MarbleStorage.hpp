@@ -4,14 +4,10 @@
 #include <map>
 #include <utility>
 
-enum class MarbleColor {
-    RED,
-    BLUE,
-    YELLOW,
-    BLACK,
-    NONE
-};
+#include "MarbleColor.hpp"
 
+// This class represents marble storage.
+// y: bottom index is 0 x: left index is 0
 class MarbleStorage {
     public:
     MarbleStorage() {}
@@ -42,6 +38,17 @@ class MarbleStorage {
     // @param x: x-index (0-based)
     MarbleColor get(const int y, const int x) const;
 
+    // get Marble Map
+    std::vector<std::vector<MarbleColor> > getMarbleMap() const;
+
     private:
     std::vector<std::vector<MarbleColor> > marbleMap;
+    // simulate marble falling.
+    // returns the list of index where collision happens.
+    // if one of the element in the list is y, then the collision happend between (y, col) and (y+1, col) marbles
+    // @param col: the column we should simulate (0-based)
+    std::vector<int> fallSimulate(const int col);
+    // In x-column, find the maximum y-range where the marble color is same.
+    // return the minimum index in the range and maximum index + 1 in the range (half-open section).
+    std::pair<int, int> findSameColorRange(const int y, const int x);
 };
