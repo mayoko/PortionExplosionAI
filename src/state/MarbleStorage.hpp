@@ -9,7 +9,7 @@
 // This class represents marble storage.
 // y: bottom index is 0 x: left index is 0
 class MarbleStorage {
-    public:
+public:
     MarbleStorage() {}
     ~MarbleStorage() {}
     MarbleStorage(const MarbleStorage& marbleStorage) {
@@ -41,7 +41,7 @@ class MarbleStorage {
     // get Marble Map
     std::vector<std::vector<MarbleColor> > getMarbleMap() const;
 
-    private:
+private:
     std::vector<std::vector<MarbleColor> > marbleMap;
     // simulate marble falling.
     // returns the list of index where collision happens.
