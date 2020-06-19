@@ -23,6 +23,12 @@ public:
                     currentPortionMap[p.first] = 0;
                 }
             }
+    Portion& operator=(const Portion& portion) {
+        this->portionType = portion.portionType;
+        this->currentPortionMap = portion.currentPortionMap;
+        this->targetPortionMap = portion.targetPortionMap;
+        return *this;
+    }
     // add 1 marble to the portion. if the move is invalid, return -1. if valid, return 0;
     int addMarble(const MarbleColor marbleColor);
     // remove 1 marble to the portion. if the move is invalid, return -1. if valid, return 0;
@@ -32,7 +38,7 @@ public:
         return currentPortionMap.count(marbleColor) == 0 ? 0 : currentPortionMap.at(marbleColor);
     }
 private:
-    const PortionType portionType;
+    PortionType portionType;
     std::map<MarbleColor, int> currentPortionMap;
-    const std::map<MarbleColor, int> targetPortionMap;
+    std::map<MarbleColor, int> targetPortionMap;
 };

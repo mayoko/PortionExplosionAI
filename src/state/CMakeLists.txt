@@ -3,4 +3,5 @@ add_library(State STATIC
     MarbleColor.cpp
     MarbleStorage.cpp
     Portion.cpp
+    State.cpp
 )
