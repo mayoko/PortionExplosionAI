@@ -3,29 +3,8 @@
 #include <iostream>
 #include "../src/state/MarbleStorage.hpp"
 #include "../src/state/MarbleColor.hpp"
+#include "TestUtil.hpp"
 #include "gtest/gtest.h"
-
-MarbleStorage getTestStorage() {
-    std::vector<std::vector<MarbleColor> > marbleMap(5, std::vector<MarbleColor>(2));
-    std::vector<std::vector<std::string> > marbleMapString(5, std::vector<std::string>(2));
-    marbleMapString[0][0] = "RED";
-    marbleMapString[1][0] = "BLUE";
-    marbleMapString[2][0] = "YELLOW";
-    marbleMapString[3][0] = "BLACK";
-    marbleMapString[4][0] = "YELLOW";
-    marbleMapString[0][1] = "RED";
-    marbleMapString[1][1] = "BLUE";
-    marbleMapString[2][1] = "YELLOW";
-    marbleMapString[3][1] = "BLACK";
-    marbleMapString[4][1] = "YELLOW";
-    for (int y = 0; y < 5; y++) {
-        for (int x = 0; x < 2; x++) {
-            marbleMap[y][x] = getMarbleColorFromString(marbleMapString[y][x]);
-        }
-    }
-    MarbleStorage marbleStorage(marbleMap);
-    return marbleStorage;
-}
 
 int getCount(const std::map<MarbleColor, int>& marbleColorMap, const MarbleColor marbleColor) {
     return marbleColorMap.count(marbleColor) ? marbleColorMap.at(marbleColor) : 0;
@@ -45,7 +24,7 @@ TEST(MarbleStorageTest, get) {
 
 // valid pick test
 TEST(MarbleStorageTest, pickWithoutExplosionValidMove) {
-    MarbleStorage marbleStorage = getTestStorage();
+    MarbleStorage marbleStorage = getTestMarbleStorage();
 
     std::vector<std::pair<int, int> > indexList(4);
     indexList[0] = std::make_pair(0, 0);
@@ -79,7 +58,7 @@ TEST(MarbleStorageTest, pickWithoutExplosionValidMove) {
 
 // invalid pick test
 TEST(MarbleStorageTest, pickWithoutExplosionInvalidMove) {
-    MarbleStorage marbleStorage = getTestStorage();
+    MarbleStorage marbleStorage = getTestMarbleStorage();
 
     std::vector<std::pair<int, int> > indexList(1);
     indexList[0] = std::make_pair(0, -1);
@@ -93,7 +72,7 @@ TEST(MarbleStorageTest, pickWithoutExplosionInvalidMove) {
 
 // valid pick test
 TEST(MarbleStorageTest, pickValidMove) {
-    MarbleStorage marbleStorage = getTestStorage();
+    MarbleStorage marbleStorage = getTestMarbleStorage();
 
     const std::map<MarbleColor, int> result = marbleStorage.pickMove(3, 0);
     EXPECT_EQ(0, getCount(result, MarbleColor::RED));
@@ -120,7 +99,7 @@ TEST(MarbleStorageTest, pickValidMove) {
 
 // invalid pick test
 TEST(MarbleStorageTest, pickInvalidMove) {
-    MarbleStorage marbleStorage = getTestStorage();
+    MarbleStorage marbleStorage = getTestMarbleStorage();
 
     const std::map<MarbleColor, int> result = marbleStorage.pickMove(7, 0);
     EXPECT_EQ(0, getCount(result, MarbleColor::RED));

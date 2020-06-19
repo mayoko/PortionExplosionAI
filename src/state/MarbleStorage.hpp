@@ -18,6 +18,10 @@ public:
     MarbleStorage(const std::vector<std::vector<MarbleColor> > marbleMap) {
         this->marbleMap = marbleMap;
     }
+    MarbleStorage& operator=(const MarbleStorage& marbleStorage) {
+        this->marbleMap = marbleStorage.marbleMap;
+        return *this;
+    }
     // pick one marble and simulate explosion.
     // this function will mutate the class.
     // return how many marbles you would get after the picking
