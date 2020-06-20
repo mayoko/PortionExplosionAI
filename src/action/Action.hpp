@@ -1,7 +1,8 @@
 #pragma once
 
 enum class ActionType {
-    PROFESSOR_HELP
+    PROFESSOR_HELP,
+    PICK_MARBLE
 };
 
 class Action {
@@ -26,4 +27,11 @@ struct ProfessorHelpPayload {
     int y;
     int x;
     ProfessorHelpPayload(const int y, const int x): y(y), x(x) {}
+};
+
+struct PickMarblePayload {
+    // marble position (0-indexed)
+    int y;
+    int x;
+    PickMarblePayload(const int y, const int x): y(y), x(x) {}
 };
