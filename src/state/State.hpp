@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "MarbleStorage.hpp"
+#include "MarbleColor.hpp"
 #include "Portion.hpp"
 #include "../action/Action.hpp"
 
@@ -31,13 +32,22 @@ public:
     void setAskedProfessorHelp(const bool askedProfessorHelp) {
         this->askedProfessorHelp = askedProfessorHelp;
     }
+    void setMarblePosessions(const std::map<MarbleColor, int> marblePosessions) {
+        this->marblePosessions = marblePosessions;
+    }
+    int getMarblePosession(const MarbleColor marbleColor) const {
+        return this->marblePosessions.count(marbleColor) == 0 ? 0 : this->marblePosessions.at(marbleColor);
+    }
 private:
     MarbleStorage marbleStorage;
     std::vector<Portion> makingPortions;
     std::vector<PortionType> availablePortions;
     std::vector<PortionType> usedPortions;
+    std::map<MarbleColor, int> marblePosessions;
     bool askedProfessorHelp;
 
     // change the state by professor help action
     void professorHelpMove(const ProfessorHelpPayload& professorHelpPayload);
+    // change the state by picking marble action
+    void pickMarbleMove(const PickMarblePayload& pickMarblePayload);
 };
