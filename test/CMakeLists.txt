@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
 
-find_package(GTest REQUIRED)
-find_package(Threads REQUIRED)
-include(GoogleTest)
-
 add_library(TestUtil STATIC
     TestUtil.cpp
 )
@@ -12,10 +8,11 @@ add_executable(TestMain
     TestMarbleStorage.cpp
     TestMarbleColor.cpp
     TestPortion.cpp
-    TestState.cpp
-)
-target_link_libraries(TestMain State Action TestUtil GTest::GTest GTest::Main)
-include_directories(${PROJECT_SOURCE_DIR}/src ${GTEST_INCLUDE_DIRS})
-
-# For each Google Test, add CTest
-gtest_add_tests(TARGET TestMain)
+    TestState.cpp)
+target_link_libraries(TestMain State Action TestUtil
+    ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/googletest-release-1.8.1/build/googlemock/gtest/libgtest.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/googletest-release-1.8.1/build/googlemock/gtest/libgtest_main.a
+    pthread)
+target_include_directories(TestMain PUBLIC
+  include
+  ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/googletest-release-1.8.1/googletest/include)
