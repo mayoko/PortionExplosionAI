@@ -1,6 +1,5 @@
 #include <vector>
 #include <map>
-#include <iostream>
 #include "../src/state/MarbleStorage.hpp"
 #include "../src/state/MarbleColor.hpp"
 #include "TestUtil.hpp"
@@ -92,6 +91,56 @@ TEST(MarbleStorageTest, pickValidMove) {
 
     for (int y = 0; y < 5; y++) {
         for (int x = 0; x < 2; x++) {
+            EXPECT_EQ(getMarbleColorFromString(expectedMarbleMapString[y][x]), marbleStorage.get(y, x));
+        }
+    }
+}
+
+// valid pick, 2 explosion will happen
+TEST(MarbleStorageTest, twoExplosionWillHappen) {
+    MarbleStorage marbleStorage = getTestLongMarbleStorage();
+
+    const std::map<MarbleColor, int> result = marbleStorage.pickMove(3, 0);
+    EXPECT_EQ(0, getCount(result, MarbleColor::RED));
+    EXPECT_EQ(3, getCount(result, MarbleColor::BLUE));
+    EXPECT_EQ(2, getCount(result, MarbleColor::YELLOW));
+    EXPECT_EQ(1, getCount(result, MarbleColor::BLACK));
+    EXPECT_EQ(0, getCount(result, MarbleColor::NONE));
+
+    std::vector<std::vector<std::string> > expectedMarbleMapString(10, std::vector<std::string>(1));
+    expectedMarbleMapString[0][0] = "YELLOW";
+    expectedMarbleMapString[1][0] = "YELLOW";
+    expectedMarbleMapString[2][0] = "BLACK";
+    expectedMarbleMapString[3][0] = "YELLOW";
+
+    // for (int y = 0; y < 10; y++) {
+    //     for (int x = 0; x < 1; x++) {
+    //         EXPECT_EQ(getMarbleColorFromString(expectedMarbleMapString[y][x]), marbleStorage.get(y, x));
+    //     }
+    // }
+}
+
+// valid pick, more than 3 pieces explose at the same time
+TEST(MarbleStorageTest, threePiecesExploseAtTheSameTime) {
+    MarbleStorage marbleStorage = getTestLongMarbleStorage();
+
+    const std::map<MarbleColor, int> result = marbleStorage.pickMove(8, 0);
+    EXPECT_EQ(0, getCount(result, MarbleColor::RED));
+    EXPECT_EQ(0, getCount(result, MarbleColor::BLUE));
+    EXPECT_EQ(3, getCount(result, MarbleColor::YELLOW));
+    EXPECT_EQ(1, getCount(result, MarbleColor::BLACK));
+    EXPECT_EQ(0, getCount(result, MarbleColor::NONE));
+
+    std::vector<std::vector<std::string> > expectedMarbleMapString(10, std::vector<std::string>(1));
+    expectedMarbleMapString[0][0] = "BLUE";
+    expectedMarbleMapString[1][0] = "BLUE";
+    expectedMarbleMapString[2][0] = "YELLOW";
+    expectedMarbleMapString[3][0] = "BLACK";
+    expectedMarbleMapString[4][0] = "YELLOW";
+    expectedMarbleMapString[5][0] = "BLUE";
+
+    for (int y = 0; y < 10; y++) {
+        for (int x = 0; x < 1; x++) {
             EXPECT_EQ(getMarbleColorFromString(expectedMarbleMapString[y][x]), marbleStorage.get(y, x));
         }
     }
