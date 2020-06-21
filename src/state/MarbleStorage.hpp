@@ -14,12 +14,20 @@ public:
     ~MarbleStorage() {}
     MarbleStorage(const MarbleStorage& marbleStorage) {
         marbleMap = marbleStorage.marbleMap;
+        height = marbleStorage.height;
+        width= marbleStorage.width;
     }
     MarbleStorage(const std::vector<std::vector<MarbleColor> > marbleMap) {
         this->marbleMap = marbleMap;
+        height = marbleMap.size();
+        if (height > 0) {
+            width = marbleMap[0].size();
+        }
     }
     MarbleStorage& operator=(const MarbleStorage& marbleStorage) {
         this->marbleMap = marbleStorage.marbleMap;
+        this->height = marbleStorage.height;
+        this->width= marbleStorage.width;
         return *this;
     }
     // pick one marble and simulate explosion.
@@ -47,6 +55,8 @@ public:
 
 private:
     std::vector<std::vector<MarbleColor> > marbleMap;
+    int height;
+    int width;
     // simulate marble falling.
     // returns the list of index where collision happens.
     // if one of the element in the list is y, then the collision happend between (y, col) and (y+1, col) marbles

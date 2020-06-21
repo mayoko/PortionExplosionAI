@@ -31,9 +31,6 @@ TEST(MarbleStorageTest, pickWithoutExplosionValidMove) {
     indexList[2] = std::make_pair(1, 1);
     indexList[3] = std::make_pair(3, 1);
     const std::map<MarbleColor, int> result = marbleStorage.pickWithoutExplosionMove(indexList);
-    const auto getCount = [](const std::map<MarbleColor, int>& marbleColorMap, const MarbleColor marbleColor) {
-        return marbleColorMap.count(marbleColor) ? marbleColorMap.at(marbleColor) : 0;
-    };
     EXPECT_EQ(1, getCount(result, MarbleColor::RED));
     EXPECT_EQ(1, getCount(result, MarbleColor::BLUE));
     EXPECT_EQ(0, getCount(result, MarbleColor::YELLOW));

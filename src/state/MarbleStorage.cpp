@@ -7,11 +7,9 @@ bool outRange(const int y, const int x, const int height, const int width) {
 }
 
 MarbleColor MarbleStorage::get(const int y, const int x) const {
-    const int height = this->marbleMap.size();
     if (height == 0) {
         return MarbleColor::NONE;
     }
-    const int width = this->marbleMap[0].size();
     if (outRange(y, x, height, width)) {
         return MarbleColor::NONE;
     }
@@ -69,31 +67,29 @@ std::map<MarbleColor, int> MarbleStorage::pickWithoutExplosionMove(const std::ve
 }
 
 std::vector<int> MarbleStorage::fallSimulate(const int col) {
-    int nextStackIndex = 0;
+    int y = 0, bottomY = 0;
     std::vector<int> result;
-    for (int y = 0; y < marbleMap.size(); ) {
-        if (this->get(y, col) != MarbleColor::NONE) {
-            if (y != nextStackIndex) {
-                // get max y pos
-                int maxY = y+1;
-                while (this->get(maxY, col) != MarbleColor::NONE) {
-                    maxY++;
-                }
-                for (int offset = 0; offset < maxY-y; offset++) {
-                    std::swap(marbleMap[nextStackIndex+offset][col], marbleMap[y+offset][col]);
-                }
-                if (nextStackIndex != 0) {
-                    result.push_back(nextStackIndex);
-                }
-                nextStackIndex += maxY-y;
-                y = maxY;
-            } else {
-                nextStackIndex++;
-                y++;
-            }
-        } else {
-            y++;
+    while (y < height) {
+        while (y < height && this->get(y, col) == MarbleColor::NONE) {
+            ++y;
         }
+        if (y == height) {
+            break;
+        }
+        int maxY = y+1;
+        while (maxY < height && this->get(maxY, col) != MarbleColor::NONE) {
+            ++maxY;
+        }
+        if (bottomY != 0) {
+            result.push_back(bottomY-1);
+        }
+        if (y != bottomY) {
+            for (int offset = 0; offset < maxY-y; ++offset) {
+                std::swap(marbleMap[bottomY+offset][col], marbleMap[y+offset][col]);
+            }
+        }
+        bottomY += maxY - y;
+        y = maxY;
     }
     return result;
 }
