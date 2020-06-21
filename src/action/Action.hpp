@@ -1,8 +1,10 @@
 #pragma once
+#include "../state/Portion.hpp"
 
 enum class ActionType {
     PROFESSOR_HELP,
-    PICK_MARBLE
+    PICK_MARBLE,
+    PORTION_TIME_REWIND
 };
 
 class Action {
@@ -34,4 +36,9 @@ struct PickMarblePayload {
     int y;
     int x;
     PickMarblePayload(const int y, const int x): y(y), x(x) {}
+};
+
+struct RewindTimePortionPayload {
+    PortionType portionType;
+    RewindTimePortionPayload(const PortionType portionType): portionType(portionType) {}
 };

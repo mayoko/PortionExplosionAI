@@ -29,6 +29,11 @@ void State::move(const Action& action) {
             PickMarblePayload *pickMarblePayload = static_cast<PickMarblePayload*>(action.getPayload());
             return this->pickMarbleMove(*pickMarblePayload);
         }
+        case ActionType::PORTION_TIME_REWIND:
+        {
+            RewindTimePortionPayload *rewindTimePortionPayload = static_cast<RewindTimePortionPayload*>(action.getPayload());
+            return this->rewindTimePortionMove(*rewindTimePortionPayload);
+        }
     }
 }
 
@@ -46,4 +51,13 @@ void State::pickMarbleMove(const PickMarblePayload& pickMarblePayload) {
     for (const auto p: result) {
         this->marblePosessions[p.first] += p.second;
     }
+}
+
+void State::rewindTimePortionMove(const RewindTimePortionPayload& payload) {
+    const PortionType portionType = payload.portionType;
+    if (this->usedPortions[portionType] == 0) {
+        return;
+    }
+    --usedPortions[portionType];
+    ++availablePortions[portionType];
 }

@@ -23,10 +23,10 @@ public:
     void setMakingPortions(const std::vector<Portion>& makingPortions) {
         this->makingPortions = makingPortions;
     }
-    void setAvailablePortions(const std::vector<PortionType>& availablePortions) {
+    void setAvailablePortions(const std::map<PortionType, int>& availablePortions) {
         this->availablePortions = availablePortions;
     }
-    void setUsedPortions(const std::vector<PortionType>& usedPortions) {
+    void setUsedPortions(const std::map<PortionType, int>& usedPortions) {
         this->usedPortions = usedPortions;
     }
     void setAskedProfessorHelp(const bool askedProfessorHelp) {
@@ -38,11 +38,17 @@ public:
     int getMarblePosession(const MarbleColor marbleColor) const {
         return this->marblePosessions.count(marbleColor) == 0 ? 0 : this->marblePosessions.at(marbleColor);
     }
+    int getAvailablePortion(const PortionType portionType) const {
+        return this->availablePortions.count(portionType) == 0 ? 0 : this->availablePortions.at(portionType);
+    }
+    int getUsedPortion(const PortionType portionType) const {
+        return this->usedPortions.count(portionType) == 0 ? 0 : this->usedPortions.at(portionType);
+    }
 private:
     MarbleStorage marbleStorage;
     std::vector<Portion> makingPortions;
-    std::vector<PortionType> availablePortions;
-    std::vector<PortionType> usedPortions;
+    std::map<PortionType, int> availablePortions;
+    std::map<PortionType, int> usedPortions;
     std::map<MarbleColor, int> marblePosessions;
     bool askedProfessorHelp;
 
@@ -50,4 +56,6 @@ private:
     void professorHelpMove(const ProfessorHelpPayload& professorHelpPayload);
     // change the state by picking marble action
     void pickMarbleMove(const PickMarblePayload& pickMarblePayload);
+    // change the state by portion -- time rewind
+    void rewindTimePortionMove(const RewindTimePortionPayload& rewindTimePortionPayload);
 };
