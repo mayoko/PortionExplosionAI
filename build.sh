@@ -2,7 +2,7 @@
 
 set -eu
 
-if [ -d third_party ]; then
+if [ ! -d third_party ]; then
     mkdir third_party
 fi
 pushd third_party/
