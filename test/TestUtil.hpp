@@ -3,4 +3,5 @@
 #include "../src/state/State.hpp"
 
 MarbleStorage getTestMarbleStorage();
+MarbleStorage getTestLongMarbleStorage();
 State getDefaultState();
