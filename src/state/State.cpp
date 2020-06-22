@@ -34,6 +34,11 @@ void State::move(const Action& action) {
             RewindTimePortionPayload *rewindTimePortionPayload = static_cast<RewindTimePortionPayload*>(action.getPayload());
             return this->rewindTimePortionMove(*rewindTimePortionPayload);
         }
+        case ActionType::PORTION_WISDOM:
+        {
+            WisdomPortionPayload *wisdomPortionPayload = static_cast<WisdomPortionPayload*>(action.getPayload());
+            return this->wisdomPortionMove(*wisdomPortionPayload);
+        }
     }
 }
 
@@ -44,6 +49,7 @@ void State::professorHelpMove(const ProfessorHelpPayload& professorHelpPayload) 
     for (const auto p: result) {
         this->marblePosessions[p.first] += p.second;
     }
+    score -= 2;
 }
 
 void State::pickMarbleMove(const PickMarblePayload& pickMarblePayload) {
@@ -60,4 +66,13 @@ void State::rewindTimePortionMove(const RewindTimePortionPayload& payload) {
     }
     --usedPortions[portionType];
     ++availablePortions[portionType];
+}
+
+void State::wisdomPortionMove(const WisdomPortionPayload& payload) {
+    std::vector<std::pair<int, int> > position(1);
+    position[0] = std::make_pair(payload.y, payload.x);
+    const std::map<MarbleColor, int> result = this->marbleStorage.pickWithoutExplosionMove(position);
+    for (const auto p: result) {
+        this->marblePosessions[p.first] += p.second;
+    }
 }

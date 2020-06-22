@@ -4,7 +4,8 @@
 enum class ActionType {
     PROFESSOR_HELP,
     PICK_MARBLE,
-    PORTION_TIME_REWIND
+    PORTION_TIME_REWIND,
+    PORTION_WISDOM
 };
 
 class Action {
@@ -41,4 +42,11 @@ struct PickMarblePayload {
 struct RewindTimePortionPayload {
     PortionType portionType;
     RewindTimePortionPayload(const PortionType portionType): portionType(portionType) {}
+};
+
+struct WisdomPortionPayload {
+    // marble position (0-indexed)
+    int y;
+    int x;
+    WisdomPortionPayload(const int y, const int x): y(y), x(x) {}
 };

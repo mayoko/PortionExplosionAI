@@ -14,5 +14,10 @@ Action ActionCreator::createPickMarbleAction(const int y, const int x) {
 
 Action ActionCreator::createRewindTimePortionAction(const PortionType portionType) {
     RewindTimePortionPayload *rewindTimePortionPayload = new RewindTimePortionPayload(portionType);
-    return Action(ActionType::PORTION_TIME_REWIND, rewindTimePortionPayload);
+    return Action(ActionType::PORTION_TIME_REWIND, static_cast<void*>(rewindTimePortionPayload));
+}
+
+Action ActionCreator::createWisdomPortionAction(const int y, const int x) {
+    WisdomPortionPayload *wisdomPortionPayload = new WisdomPortionPayload(y, x);
+    return Action(ActionType::PORTION_WISDOM, static_cast<void*>(wisdomPortionPayload));
 }

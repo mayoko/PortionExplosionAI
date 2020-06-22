@@ -47,3 +47,12 @@ TEST(rewindTimePortion, invalidMove) {
     EXPECT_EQ(0, state.getAvailablePortion(targetPortionType));
     EXPECT_EQ(0, state.getUsedPortion(targetPortionType));
 }
+
+TEST(MoveTest, wisdomPortion) {
+    State state = getDefaultState();
+    Action action = ActionCreator::createWisdomPortionAction(2, 1);
+    state.move(action);
+    EXPECT_EQ(MarbleColor::NONE, state.getMarbleStorage().get(4, 1));
+    EXPECT_EQ(1, state.getMarblePosession(MarbleColor::YELLOW));
+    EXPECT_EQ(0, state.getMarblePosession(MarbleColor::BLACK));
+}

@@ -51,6 +51,7 @@ private:
     std::map<PortionType, int> usedPortions;
     std::map<MarbleColor, int> marblePosessions;
     bool askedProfessorHelp;
+    int score;
 
     // change the state by professor help action
     void professorHelpMove(const ProfessorHelpPayload& professorHelpPayload);
@@ -58,4 +59,6 @@ private:
     void pickMarbleMove(const PickMarblePayload& pickMarblePayload);
     // change the state by portion -- time rewind
     void rewindTimePortionMove(const RewindTimePortionPayload& rewindTimePortionPayload);
+    // change the state by portion -- wisdom
+    void wisdomPortionMove(const WisdomPortionPayload& payload);
 };
