@@ -16,13 +16,13 @@ enum class PortionType {
 class Portion {
 public:
     Portion(const PortionType portionType, const std::map<MarbleColor, int> targetPortionMap):
-            portionType(portionType),
-            targetPortionMap(targetPortionMap)
-            {
-                for (const auto p: targetPortionMap) {
-                    currentPortionMap[p.first] = 0;
-                }
+        portionType(portionType),
+        targetPortionMap(targetPortionMap)
+        {
+            for (const auto p: targetPortionMap) {
+                currentPortionMap[p.first] = 0;
             }
+        }
     Portion& operator=(const Portion& portion) {
         this->portionType = portion.portionType;
         this->currentPortionMap = portion.currentPortionMap;
