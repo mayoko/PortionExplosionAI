@@ -21,23 +21,23 @@ void State::move(const Action& action) {
     switch(action.getActionType()) {
         case ActionType::PROFESSOR_HELP:
         {
-            ProfessorHelpPayload *professorHelpPayload = static_cast<ProfessorHelpPayload*>(action.getPayload());
-            return this->professorHelpMove(*professorHelpPayload);
+            const ProfessorHelpPayload payload = std::get<ProfessorHelpPayload>(action.getPayload());
+            return this->professorHelpMove(payload);
         }
         case ActionType::PICK_MARBLE:
         {
-            PickMarblePayload *pickMarblePayload = static_cast<PickMarblePayload*>(action.getPayload());
-            return this->pickMarbleMove(*pickMarblePayload);
+            const PickMarblePayload payload = std::get<PickMarblePayload>(action.getPayload());
+            return this->pickMarbleMove(payload);
         }
         case ActionType::PORTION_TIME_REWIND:
         {
-            RewindTimePortionPayload *rewindTimePortionPayload = static_cast<RewindTimePortionPayload*>(action.getPayload());
-            return this->rewindTimePortionMove(*rewindTimePortionPayload);
+            const RewindTimePortionPayload payload = std::get<RewindTimePortionPayload>(action.getPayload());
+            return this->rewindTimePortionMove(payload);
         }
         case ActionType::PORTION_WISDOM:
         {
-            WisdomPortionPayload *wisdomPortionPayload = static_cast<WisdomPortionPayload*>(action.getPayload());
-            return this->wisdomPortionMove(*wisdomPortionPayload);
+            const WisdomPortionPayload payload = std::get<WisdomPortionPayload>(action.getPayload());
+            return this->wisdomPortionMove(payload);
         }
     }
 }
