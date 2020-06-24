@@ -1,28 +1,12 @@
 #pragma once
 #include "../state/Portion.hpp"
+#include <variant>
 
 enum class ActionType {
     PROFESSOR_HELP,
     PICK_MARBLE,
     PORTION_TIME_REWIND,
     PORTION_WISDOM
-};
-
-class Action {
-public:
-    Action(const ActionType actionType, void* payload):
-        actionType(actionType),
-        payload(payload)
-    {}
-    ActionType getActionType() const {
-        return this->actionType;
-    }
-    void* getPayload() const {
-        return this->payload;
-    }
-protected:
-    ActionType actionType;
-    void* payload;
 };
 
 struct ProfessorHelpPayload {
@@ -49,4 +33,28 @@ struct WisdomPortionPayload {
     int y;
     int x;
     WisdomPortionPayload(const int y, const int x): y(y), x(x) {}
+};
+
+typedef std::variant<
+        ProfessorHelpPayload,
+        PickMarblePayload,
+        RewindTimePortionPayload,
+        WisdomPortionPayload
+    > ActionPayload;
+
+class Action {
+public:
+    Action(const ActionType actionType, const ActionPayload& payload):
+        actionType(actionType),
+        payload(payload)
+    {}
+    ActionType getActionType() const {
+        return this->actionType;
+    }
+    ActionPayload getPayload() const {
+        return this->payload;
+    }
+protected:
+    ActionType actionType;
+    ActionPayload payload;
 };
