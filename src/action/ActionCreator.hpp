@@ -8,6 +8,7 @@ public:
     static Action createPickMarbleAction(const int y, const int x);
     static Action createRewindTimePortionAction(const PortionType portionType);
     static Action createWisdomPortionAction(const int y, const int x);
+    static Action createDatingPortionAction(const int y, const int x);
 private:
     ActionCreator() {}
     ActionCreator(const ActionCreator& ActionCreator) {}

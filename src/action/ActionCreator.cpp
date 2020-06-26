@@ -21,3 +21,8 @@ Action ActionCreator::createWisdomPortionAction(const int y, const int x) {
     WisdomPortionPayload wisdomPortionPayload(y, x);
     return Action(ActionType::PORTION_WISDOM, wisdomPortionPayload);
 }
+
+Action ActionCreator::createDatingPortionAction(const int y, const int x) {
+    DatingPortionPayload payload(y, x);
+    return Action(ActionType::PORTION_DATING, payload);
+}
