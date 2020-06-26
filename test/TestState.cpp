@@ -10,6 +10,17 @@ TEST(MoveTest, professorHelp) {
     EXPECT_EQ(MarbleColor::NONE, state.getMarbleStorage().get(4, 1));
     EXPECT_EQ(1, state.getMarblePosession(MarbleColor::YELLOW));
     EXPECT_EQ(0, state.getMarblePosession(MarbleColor::BLACK));
+    EXPECT_EQ(true, state.isAskedProfessorHelp());
+}
+
+TEST(isValidTest, professorHelp) {
+    State state = getDefaultState();
+    Action action = ActionCreator::createProfessorHelpAction(5, 1);
+    EXPECT_EQ(false, state.isValidMove(action));
+    action = ActionCreator::createProfessorHelpAction(2, 1);
+    EXPECT_EQ(true, state.isValidMove(action));
+    state.setAskedProfessorHelp(true);
+    EXPECT_EQ(false, state.isValidMove(action));
 }
 
 TEST(MoveTest, pickMarble) {
@@ -23,6 +34,18 @@ TEST(MoveTest, pickMarble) {
     EXPECT_EQ(2, state.getMarblePosession(MarbleColor::YELLOW));
     EXPECT_EQ(1, state.getMarblePosession(MarbleColor::BLACK));
     EXPECT_EQ(0, state.getMarblePosession(MarbleColor::RED));
+    EXPECT_EQ(true, state.isPickedMarble());
+}
+
+TEST(isValidTest, pickMarble) {
+    State state = getDefaultState();
+    // assume that the explosion will happen
+    Action action = ActionCreator::createProfessorHelpAction(5, 1);
+    EXPECT_EQ(false, state.isValidMove(action));
+    action = ActionCreator::createPickMarbleAction(3, 1);
+    EXPECT_EQ(true, state.isValidMove(action));
+    state.setPickedMarble(true);
+    EXPECT_EQ(false, state.isValidMove(action));
 }
 
 TEST(rewindTimePortion, validMove) {
@@ -48,11 +71,91 @@ TEST(rewindTimePortion, invalidMove) {
     EXPECT_EQ(0, state.getUsedPortion(targetPortionType));
 }
 
+TEST(isValidTest, rewindTimePortionValid) {
+    State state = getDefaultState();
+    const PortionType targetPortionType = PortionType::FALL_IN_LOVE;
+    std::map<PortionType, int> usedPortions;
+    usedPortions[targetPortionType] = 1;
+    state.setUsedPortions(usedPortions);
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::REWIND_TIME] = 1;
+    state.setAvailablePortions(availablePortions);
+    Action action = ActionCreator::createRewindTimePortionAction(targetPortionType);
+    EXPECT_EQ(true, state.isValidMove(action));
+    availablePortions[PortionType::REWIND_TIME] = 0;
+    state.setAvailablePortions(availablePortions);
+    EXPECT_EQ(false, state.isValidMove(action));
+}
+
+TEST(isValidTest, rewindTimePortionInvalid) {
+    State state = getDefaultState();
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::REWIND_TIME] = 1;
+    state.setAvailablePortions(availablePortions);
+    const PortionType targetPortionType = PortionType::FALL_IN_LOVE;
+    std::map<PortionType, int> usedPortions;
+    state.setUsedPortions(usedPortions);
+    Action action = ActionCreator::createRewindTimePortionAction(targetPortionType);
+    EXPECT_EQ(false, state.isValidMove(action));
+}
+
 TEST(MoveTest, wisdomPortion) {
     State state = getDefaultState();
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::WISDOM] = 2;
+    state.setAvailablePortions(availablePortions);
     Action action = ActionCreator::createWisdomPortionAction(2, 1);
     state.move(action);
     EXPECT_EQ(MarbleColor::NONE, state.getMarbleStorage().get(4, 1));
     EXPECT_EQ(1, state.getMarblePosession(MarbleColor::YELLOW));
     EXPECT_EQ(0, state.getMarblePosession(MarbleColor::BLACK));
+    EXPECT_EQ(1, state.getAvailablePortion(PortionType::WISDOM));
+}
+
+TEST(isValidTest, wisdomPortion) {
+    State state = getDefaultState();
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::WISDOM] = 1;
+    state.setAvailablePortions(availablePortions);
+    Action action = ActionCreator::createWisdomPortionAction(5, 1);
+    EXPECT_EQ(false, state.isValidMove(action));
+    action = ActionCreator::createWisdomPortionAction(3, 1);
+    EXPECT_EQ(true, state.isValidMove(action));
+    availablePortions[PortionType::WISDOM] = 0;
+    state.setAvailablePortions(availablePortions);
+    EXPECT_EQ(false, state.isValidMove(action));
+}
+
+TEST(MoveTest, datingPortion) {
+    State state = getDefaultState();
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::DATING] = 2;
+    state.setAvailablePortions(availablePortions);
+    Action action = ActionCreator::createDatingPortionAction(2, 1);
+    state.move(action);
+    EXPECT_EQ(MarbleColor::NONE, state.getMarbleStorage().get(4, 1));
+    EXPECT_EQ(MarbleColor::NONE, state.getMarbleStorage().get(3, 1));
+    EXPECT_EQ(1, state.getMarblePosession(MarbleColor::YELLOW));
+    EXPECT_EQ(1, state.getMarblePosession(MarbleColor::BLACK));
+    EXPECT_EQ(0, state.getMarblePosession(MarbleColor::RED));
+    EXPECT_EQ(1, state.getAvailablePortion(PortionType::DATING));
+}
+
+TEST(isValidTest, datingPortion) {
+    State state = getDefaultState();
+    state.setMarbleStorage(getTestLongMarbleStorage());
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::DATING] = 1;
+    state.setAvailablePortions(availablePortions);
+    Action action = ActionCreator::createDatingPortionAction(9, 0);
+    // because picking position is outside
+    EXPECT_EQ(false, state.isValidMove(action));
+    action = ActionCreator::createDatingPortionAction(0, 0);
+    // because marbles picked are the same color
+    EXPECT_EQ(false, state.isValidMove(action));
+    action = ActionCreator::createDatingPortionAction(2, 0);
+    EXPECT_EQ(true, state.isValidMove(action));
+    availablePortions[PortionType::DATING] = 0;
+    state.setAvailablePortions(availablePortions);
+    EXPECT_EQ(false, state.isValidMove(action));
 }

@@ -12,6 +12,7 @@ public:
     State(const State& state);
     // change the state by action
     void move(const Action& action);
+    bool isValidMove(const Action& action) const;
 
     // getter / setter
     MarbleStorage getMarbleStorage() const {
@@ -29,6 +30,9 @@ public:
     void setUsedPortions(const std::map<PortionType, int>& usedPortions) {
         this->usedPortions = usedPortions;
     }
+    void setPickedMarble(const bool pickedMarble) {
+        this->pickedMarble = pickedMarble;
+    }
     void setAskedProfessorHelp(const bool askedProfessorHelp) {
         this->askedProfessorHelp = askedProfessorHelp;
     }
@@ -44,6 +48,12 @@ public:
     int getUsedPortion(const PortionType portionType) const {
         return this->usedPortions.count(portionType) == 0 ? 0 : this->usedPortions.at(portionType);
     }
+    bool isAskedProfessorHelp() const {
+        return this->askedProfessorHelp;
+    }
+    bool isPickedMarble() const {
+        return this->pickedMarble;
+    }
 private:
     MarbleStorage marbleStorage;
     std::vector<Portion> makingPortions;
@@ -51,6 +61,7 @@ private:
     std::map<PortionType, int> usedPortions;
     std::map<MarbleColor, int> marblePosessions;
     bool askedProfessorHelp;
+    bool pickedMarble;
     int score;
 
     // change the state by professor help action
@@ -61,4 +72,6 @@ private:
     void rewindTimePortionMove(const RewindTimePortionPayload& rewindTimePortionPayload);
     // change the state by portion -- wisdom
     void wisdomPortionMove(const WisdomPortionPayload& payload);
+    // change the state by portion -- dating
+    void datingPortionMove(const DatingPortionPayload& payload);
 };

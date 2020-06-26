@@ -6,7 +6,8 @@ enum class ActionType {
     PROFESSOR_HELP,
     PICK_MARBLE,
     PORTION_TIME_REWIND,
-    PORTION_WISDOM
+    PORTION_WISDOM,
+    PORTION_DATING
 };
 
 struct ProfessorHelpPayload {
@@ -35,11 +36,20 @@ struct WisdomPortionPayload {
     WisdomPortionPayload(const int y, const int x): y(y), x(x) {}
 };
 
+struct DatingPortionPayload {
+    // marble position (0-indexed)
+    // will get (y, x) and (y+1, x)
+    int y;
+    int x;
+    DatingPortionPayload(const int y, const int x): y(y), x(x) {}
+};
+
 typedef std::variant<
         ProfessorHelpPayload,
         PickMarblePayload,
         RewindTimePortionPayload,
-        WisdomPortionPayload
+        WisdomPortionPayload,
+        DatingPortionPayload
     > ActionPayload;
 
 class Action {
