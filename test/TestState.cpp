@@ -171,3 +171,42 @@ TEST(isValidTest, datingPortion) {
     state.setAvailablePortions(availablePortions);
     EXPECT_EQ(false, state.isValidMove(action));
 }
+
+TEST(isValidTest, exchangeMarbleWithPool) {
+    const auto validTest = [](const MarbleColor fromColor, const MarbleColor toColor, const MarbleColor actionFromColor, const MarbleColor actionToColor, const int exchangeNum) -> bool {
+        State state = getDefaultState();
+        state.setExchangeNum(exchangeNum);
+        std::map<MarbleColor, int> marblePossession;
+        marblePossession[fromColor] = 1;
+        state.setMarblePosessions(marblePossession);
+        std::map<MarbleColor, int> myMarblePool;
+        myMarblePool[toColor] = 1;
+        state.setMyMarblePool(myMarblePool);
+        const Action action = ActionCreator::createExchangeMarbleWithPoolAction(actionFromColor, actionToColor);
+        return state.isValidMove(action);
+    };
+    EXPECT_EQ(false, validTest(MarbleColor::NONE, MarbleColor::RED, MarbleColor::BLACK, MarbleColor::RED, 0));
+    EXPECT_EQ(false, validTest(MarbleColor::RED, MarbleColor::NONE, MarbleColor::RED, MarbleColor::BLACK, 0));
+    EXPECT_EQ(false, validTest(MarbleColor::RED, MarbleColor::BLACK, MarbleColor::RED, MarbleColor::BLUE, 0));
+    EXPECT_EQ(false, validTest(MarbleColor::RED, MarbleColor::BLACK, MarbleColor::RED, MarbleColor::BLACK, 10));
+    EXPECT_EQ(true, validTest(MarbleColor::RED, MarbleColor::BLACK, MarbleColor::RED, MarbleColor::BLACK, 0));
+}
+
+TEST(MoveTest, exchangeMarbleWithPool) {
+    State state = getDefaultState();
+    const MarbleColor possessionColor = MarbleColor::RED;
+    const MarbleColor poolColor = MarbleColor::BLACK;
+    state.setExchangeNum(0);
+    std::map<MarbleColor, int> marblePossession;
+    marblePossession[possessionColor] = 1;
+    state.setMarblePosessions(marblePossession);
+    std::map<MarbleColor, int> myMarblePool;
+    myMarblePool[poolColor] = 1;
+    state.setMyMarblePool(myMarblePool);
+    const Action action = ActionCreator::createExchangeMarbleWithPoolAction(possessionColor, poolColor);
+    state.move(action);
+    EXPECT_EQ(0, state.getMarblePosession(MarbleColor::RED));
+    EXPECT_EQ(1, state.getMarblePosession(MarbleColor::BLACK));
+    EXPECT_EQ(1, state.getMyMarblePool(MarbleColor::RED));
+    EXPECT_EQ(0, state.getMyMarblePool(MarbleColor::BLACK));
+}
