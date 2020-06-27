@@ -99,6 +99,18 @@ TEST(isValidTest, rewindTimePortionInvalid) {
     EXPECT_EQ(false, state.isValidMove(action));
 }
 
+TEST(isValidTest, rewindTimePortionWithRewindPortion) {
+    State state = getDefaultState();
+    std::map<PortionType, int> availablePortions;
+    availablePortions[PortionType::REWIND_TIME] = 1;
+    state.setAvailablePortions(availablePortions);
+    const PortionType targetPortionType = PortionType::REWIND_TIME;
+    std::map<PortionType, int> usedPortions;
+    state.setUsedPortions(usedPortions);
+    Action action = ActionCreator::createRewindTimePortionAction(targetPortionType);
+    EXPECT_EQ(false, state.isValidMove(action));
+}
+
 TEST(MoveTest, wisdomPortion) {
     State state = getDefaultState();
     std::map<PortionType, int> availablePortions;
