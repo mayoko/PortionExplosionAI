@@ -49,5 +49,6 @@ MarbleStorage getTestLongMarbleStorage() {
 State getDefaultState() {
     State state;
     state.setMarbleStorage(getTestMarbleStorage());
+    state.setPickedMarble(false);
     return state;
 }
