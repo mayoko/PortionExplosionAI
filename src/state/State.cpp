@@ -63,7 +63,7 @@ bool State::isValidMove(const Action& action) const {
         case ActionType::PORTION_TIME_REWIND:
         {
             const RewindTimePortionPayload payload = std::get<RewindTimePortionPayload>(action.getPayload());
-            return getAvailablePortion(PortionType::REWIND_TIME) > 0 && getUsedPortion(payload.portionType) > 0;
+            return getAvailablePortion(PortionType::REWIND_TIME) > 0 && payload.portionType != PortionType::REWIND_TIME && getUsedPortion(payload.portionType) > 0;
         }
         case ActionType::PORTION_WISDOM:
         {
