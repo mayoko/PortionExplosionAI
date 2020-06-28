@@ -8,6 +8,8 @@
 
 class State {
 public:
+    const static int MAX_POOL = 3;
+
     State();
     State(const State& state);
     // change the state by action
@@ -84,14 +86,14 @@ private:
     // the number of exchange from possession to pool
     int exchangeNum;
 
-    const static int MAX_EXCHANGE_NUM = 3;
-
     // change the state by professor help action
     void professorHelpMove(const ProfessorHelpPayload& professorHelpPayload);
     // change the state by picking marble action
     void pickMarbleMove(const PickMarblePayload& pickMarblePayload);
     // exchange marble with pool
     void exchangeMarbleWithPoolMove(const ExchangeMarbleWithPoolPayload payload);
+    // move marble to pool
+    void moveMarbleToPoolMove(const MoveMarbleToPoolPayload payload);
     // change the state by portion -- time rewind
     void rewindTimePortionMove(const RewindTimePortionPayload& rewindTimePortionPayload);
     // change the state by portion -- wisdom

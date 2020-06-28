@@ -35,6 +35,11 @@ void State::move(const Action& action) {
             const ExchangeMarbleWithPoolPayload payload = std::get<ExchangeMarbleWithPoolPayload>(action.getPayload());
             return this->exchangeMarbleWithPoolMove(payload);
         }
+        case ActionType::MOVE_MARBLE_TO_POOL:
+        {
+            const MoveMarbleToPoolPayload payload = std::get<MoveMarbleToPoolPayload>(action.getPayload());
+            return this->moveMarbleToPoolMove(payload);
+        }
         case ActionType::PORTION_TIME_REWIND:
         {
             const RewindTimePortionPayload payload = std::get<RewindTimePortionPayload>(action.getPayload());
@@ -72,8 +77,17 @@ bool State::isValidMove(const Action& action) const {
             const bool possessionAvailable = getMarblePosession(payload.possessionMarbleColor) > 0;
             const bool poolAvailable = getMyMarblePool(payload.poolMarbleColor) > 0;
             const bool isDifferentColor = payload.poolMarbleColor != payload.possessionMarbleColor;
-            const bool notExceedMaximumExchange = this->exchangeNum < State::MAX_EXCHANGE_NUM;
+            const bool notExceedMaximumExchange = this->exchangeNum < State::MAX_POOL;
             return isNotNone && possessionAvailable && poolAvailable && isDifferentColor && notExceedMaximumExchange;
+        }
+        case ActionType::MOVE_MARBLE_TO_POOL:
+        {
+            const MoveMarbleToPoolPayload payload = std::get<MoveMarbleToPoolPayload>(action.getPayload());
+            int myPoolMarbleSum = 0;
+            for (const auto& p: this->myMarblePool) {
+                myPoolMarbleSum += p.second;
+            }
+            return getMarblePosession(payload.marbleColor) > 0 && myPoolMarbleSum < State::MAX_POOL;
         }
         case ActionType::PORTION_TIME_REWIND:
         {
@@ -120,6 +134,11 @@ void State::exchangeMarbleWithPoolMove(const ExchangeMarbleWithPoolPayload paylo
     --this->myMarblePool[payload.poolMarbleColor];
     ++this->marblePosessions[payload.poolMarbleColor];
     ++this->myMarblePool[payload.possessionMarbleColor];
+}
+
+void State::moveMarbleToPoolMove(const MoveMarbleToPoolPayload payload) {
+    --this->marblePosessions[payload.marbleColor];
+    ++this->myMarblePool[payload.marbleColor];
 }
 
 void State::rewindTimePortionMove(const RewindTimePortionPayload& payload) {

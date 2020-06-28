@@ -17,6 +17,11 @@ Action ActionCreator::createExchangeMarbleWithPoolAction(const MarbleColor posse
     return Action(ActionType::EXCHANGE_MARBLE_WITH_POOL, payload);
 }
 
+Action ActionCreator::createMoveMarbleToPoolAction(const MarbleColor marbleColor) {
+    MoveMarbleToPoolPayload payload(marbleColor);
+    return Action(ActionType::MOVE_MARBLE_TO_POOL, payload);
+}
+
 Action ActionCreator::createRewindTimePortionAction(const PortionType portionType) {
     RewindTimePortionPayload rewindTimePortionPayload(portionType);
     return Action(ActionType::PORTION_TIME_REWIND, rewindTimePortionPayload);

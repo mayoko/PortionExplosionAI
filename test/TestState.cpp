@@ -210,3 +210,34 @@ TEST(MoveTest, exchangeMarbleWithPool) {
     EXPECT_EQ(1, state.getMyMarblePool(MarbleColor::RED));
     EXPECT_EQ(0, state.getMyMarblePool(MarbleColor::BLACK));
 }
+
+TEST(isValidTest, moveMarbleToPool) {
+    const auto validTest = [](const std::map<MarbleColor, int> marblePossessions, const MarbleColor moveMarbleColor, const int emptyPoolNum) -> bool {
+        State state = getDefaultState();
+        state.setMarblePosessions(marblePossessions);
+        std::map<MarbleColor, int> myMarblePool;
+        myMarblePool[MarbleColor::RED] = State::MAX_POOL - emptyPoolNum;
+        state.setMyMarblePool(myMarblePool);
+        const Action action = ActionCreator::createMoveMarbleToPoolAction(moveMarbleColor);
+        return state.isValidMove(action);
+    };
+    std::map<MarbleColor, int> marblePossessions;
+    marblePossessions[MarbleColor::BLACK] = 1;
+    EXPECT_EQ(false, validTest(marblePossessions, MarbleColor::BLACK, 0));
+    EXPECT_EQ(false, validTest(marblePossessions, MarbleColor::RED, 2));
+    EXPECT_EQ(true, validTest(marblePossessions, MarbleColor::BLACK, 2));
+}
+
+TEST(MoveTest, moveMarbleToPool) {
+    State state = getDefaultState();
+
+    std::map<MarbleColor, int> marblePossessions;
+    const MarbleColor targetColor = MarbleColor::BLACK;
+    marblePossessions[targetColor] = 1;
+    state.setMarblePosessions(marblePossessions);
+
+    const Action action = ActionCreator::createMoveMarbleToPoolAction(targetColor);
+    state.move(action);
+    EXPECT_EQ(0, state.getMarblePosession(targetColor));
+    EXPECT_EQ(1, state.getMyMarblePool(targetColor));
+}
