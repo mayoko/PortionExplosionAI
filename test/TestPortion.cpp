@@ -9,12 +9,12 @@ TEST(PortionTest, addSameColorMarbleTest) {
     {
         const int result = portion.addMarble(MarbleColor::BLACK);
         EXPECT_EQ(0, result);
-        EXPECT_EQ(1, portion.get(MarbleColor::BLACK));
+        EXPECT_EQ(1, portion.getCurrent(MarbleColor::BLACK));
     }
     {
         const int result = portion.addMarble(MarbleColor::BLACK);
         EXPECT_EQ(0, result);
-        EXPECT_EQ(2, portion.get(MarbleColor::BLACK));
+        EXPECT_EQ(2, portion.getCurrent(MarbleColor::BLACK));
     }
     {
         const int result = portion.addMarble(MarbleColor::BLACK);
@@ -38,7 +38,7 @@ TEST(PortionTest, removeSameColorMarbleTest) {
     {
         const int result = portion.removeMarble(MarbleColor::BLACK);
         EXPECT_EQ(0, result);
-        EXPECT_EQ(0, portion.get(MarbleColor::BLACK));
+        EXPECT_EQ(0, portion.getCurrent(MarbleColor::BLACK));
     }
     {
         const int result = portion.removeMarble(MarbleColor::BLACK);

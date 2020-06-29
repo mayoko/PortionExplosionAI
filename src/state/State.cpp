@@ -40,6 +40,11 @@ void State::move(const Action& action) {
             const MoveMarbleToPoolPayload payload = std::get<MoveMarbleToPoolPayload>(action.getPayload());
             return this->moveMarbleToPoolMove(payload);
         }
+        case ActionType::MOVE_MARBLE_TO_PORTION:
+        {
+            const MoveMarbleToPortionPayload payload = std::get<MoveMarbleToPortionPayload>(action.getPayload());
+            return this->moveMarbleToPortionMove(payload);
+        }
         case ActionType::PORTION_TIME_REWIND:
         {
             const RewindTimePortionPayload payload = std::get<RewindTimePortionPayload>(action.getPayload());
@@ -88,6 +93,14 @@ bool State::isValidMove(const Action& action) const {
                 myPoolMarbleSum += p.second;
             }
             return getMarblePosession(payload.marbleColor) > 0 && myPoolMarbleSum < State::MAX_POOL;
+        }
+        case ActionType::MOVE_MARBLE_TO_PORTION:
+        {
+            const MoveMarbleToPortionPayload payload = std::get<MoveMarbleToPortionPayload>(action.getPayload());
+            if (payload.index >= this->makingPortions.size()) return false;
+            const Portion& portion = this->makingPortions[payload.index];
+            const bool canMoveToPortion = (portion.getTarget(payload.marbleColor) - portion.getCurrent(payload.marbleColor) > 0);
+            return canMoveToPortion && getMarblePosession(payload.marbleColor) > 0;
         }
         case ActionType::PORTION_TIME_REWIND:
         {
@@ -139,6 +152,11 @@ void State::exchangeMarbleWithPoolMove(const ExchangeMarbleWithPoolPayload paylo
 void State::moveMarbleToPoolMove(const MoveMarbleToPoolPayload payload) {
     --this->marblePosessions[payload.marbleColor];
     ++this->myMarblePool[payload.marbleColor];
+}
+
+void State::moveMarbleToPortionMove(const MoveMarbleToPortionPayload payload) {
+    --this->marblePosessions[payload.marbleColor];
+    this->makingPortions[payload.index].addMarble(payload.marbleColor);
 }
 
 void State::rewindTimePortionMove(const RewindTimePortionPayload& payload) {
