@@ -7,6 +7,7 @@ enum class ActionType {
     PICK_MARBLE,
     EXCHANGE_MARBLE_WITH_POOL,
     MOVE_MARBLE_TO_POOL,
+    MOVE_MARBLE_TO_PORTION,
     PORTION_TIME_REWIND,
     PORTION_WISDOM,
     PORTION_DATING
@@ -40,6 +41,12 @@ struct MoveMarbleToPoolPayload{
     MoveMarbleToPoolPayload(const MarbleColor marbleColor): marbleColor(marbleColor) {}
 };
 
+struct MoveMarbleToPortionPayload{
+    int index;
+    MarbleColor marbleColor;
+    MoveMarbleToPortionPayload(const int index, const MarbleColor marbleColor): index(index), marbleColor(marbleColor) {}
+};
+
 struct RewindTimePortionPayload {
     PortionType portionType;
     RewindTimePortionPayload(const PortionType portionType): portionType(portionType) {}
@@ -65,6 +72,7 @@ typedef std::variant<
         PickMarblePayload,
         ExchangeMarbleWithPoolPayload,
         MoveMarbleToPoolPayload,
+        MoveMarbleToPortionPayload,
         RewindTimePortionPayload,
         WisdomPortionPayload,
         DatingPortionPayload

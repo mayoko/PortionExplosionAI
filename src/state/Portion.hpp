@@ -34,8 +34,12 @@ public:
     // remove 1 marble to the portion. if the move is invalid, return -1. if valid, return 0;
     int removeMarble(const MarbleColor marbleColor);
     // get the current number of marbles in the portion
-    int get(const MarbleColor marbleColor) const {
+    int getCurrent(const MarbleColor marbleColor) const {
         return currentPortionMap.count(marbleColor) == 0 ? 0 : currentPortionMap.at(marbleColor);
+    }
+    // get the target number of marbles in the portion
+    int getTarget(const MarbleColor marbleColor) const {
+        return targetPortionMap.count(marbleColor) == 0 ? 0 : targetPortionMap.at(marbleColor);
     }
 private:
     PortionType portionType;

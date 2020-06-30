@@ -66,6 +66,9 @@ public:
     int getUsedPortion(const PortionType portionType) const {
         return this->usedPortions.count(portionType) == 0 ? 0 : this->usedPortions.at(portionType);
     }
+    Portion getMakingPortion(const int index) const {
+        return this->makingPortions[index];
+    }
     bool isAskedProfessorHelp() const {
         return this->askedProfessorHelp;
     }
@@ -94,6 +97,8 @@ private:
     void exchangeMarbleWithPoolMove(const ExchangeMarbleWithPoolPayload payload);
     // move marble to pool
     void moveMarbleToPoolMove(const MoveMarbleToPoolPayload payload);
+    // move marble to portion
+    void moveMarbleToPortionMove(const MoveMarbleToPortionPayload payload);
     // change the state by portion -- time rewind
     void rewindTimePortionMove(const RewindTimePortionPayload& rewindTimePortionPayload);
     // change the state by portion -- wisdom

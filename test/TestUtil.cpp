@@ -50,5 +50,20 @@ State getDefaultState() {
     State state;
     state.setMarbleStorage(getTestMarbleStorage());
     state.setPickedMarble(false);
+    state.setMakingPortions(getDefaultPortions());
     return state;
+}
+
+Portion getDefaultPortion() {
+    std::map<MarbleColor, int> targetMarbleMap;
+    targetMarbleMap[MarbleColor::RED] = 2;
+    targetMarbleMap[MarbleColor::BLACK] = 3;
+    Portion portion(PortionType::FALL_IN_LOVE, targetMarbleMap);
+    return portion;
+}
+
+std::vector<Portion> getDefaultPortions() {
+    std::vector<Portion> portions;
+    portions.push_back(getDefaultPortion());
+    return portions;
 }

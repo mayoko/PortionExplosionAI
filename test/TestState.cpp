@@ -241,3 +241,36 @@ TEST(MoveTest, moveMarbleToPool) {
     EXPECT_EQ(0, state.getMarblePosession(targetColor));
     EXPECT_EQ(1, state.getMyMarblePool(targetColor));
 }
+
+TEST(isValidTest, moveMarbleToPortion) {
+    State state = getDefaultState();
+    const auto validTest = [](const std::map<MarbleColor, int> marblePossessions, const MarbleColor moveMarbleColor) -> bool {
+        State state = getDefaultState();
+        state.setMarblePosessions(marblePossessions);
+        const Action action = ActionCreator::createMoveMarbleToPortionAction(0, moveMarbleColor);
+        return state.isValidMove(action);
+    };
+
+    std::map<MarbleColor, int> marblePossessions;
+    EXPECT_EQ(false, validTest(marblePossessions, MarbleColor::BLACK));
+    marblePossessions[MarbleColor::BLACK] = 1;
+    EXPECT_EQ(true, validTest(marblePossessions, MarbleColor::BLACK));
+    marblePossessions[MarbleColor::BLUE] = 1;
+    // expect false because portion doesn't contain blue marble
+    EXPECT_EQ(false, validTest(marblePossessions, MarbleColor::BLUE));
+}
+
+TEST(MoveTest, moveMarbleToPortion) {
+    State state = getDefaultState();
+
+    std::map<MarbleColor, int> marblePossessions;
+    const MarbleColor targetColor = MarbleColor::BLACK;
+    marblePossessions[targetColor] = 1;
+    state.setMarblePosessions(marblePossessions);
+
+    const Action action = ActionCreator::createMoveMarbleToPortionAction(0, MarbleColor::BLACK);
+    state.move(action);
+
+    EXPECT_EQ(0, state.getMarblePosession(MarbleColor::BLACK));
+    EXPECT_EQ(1, state.getMakingPortion(0).getCurrent(MarbleColor::BLACK));
+}
