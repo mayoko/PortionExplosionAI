@@ -34,6 +34,7 @@
     },
     "scripts": {
         "start": "npm run build && electron ./dist/main.js",
+        "exec": "electron ./dist/main.js",
         "build": "tsc && webpack",
         "build:main": "tsc",
         "build:render": "webpack"
