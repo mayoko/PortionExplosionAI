@@ -33,7 +33,9 @@
         "webpack-cli": "^3.3.12"
     },
     "scripts": {
-        "start": "electron ./dist/main.js",
+        "start": "npm run build && electron ./dist/main.js",
+        "exec": "electron ./dist/main.js",
+        "build": "tsc && webpack",
         "build:main": "tsc",
         "build:render": "webpack"
     }
