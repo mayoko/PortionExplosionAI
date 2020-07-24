@@ -1,9 +1,9 @@
 import { combineReducers, createStore } from 'redux';
 import { State } from './states/State';
-import userReducer from './reducers/UserReducer';
+import usablePortionReducer from './reducers/UsablePortions';
 
 const combinnedReducer = combineReducers<State>({
-    user: userReducer,
+    usablePortions: usablePortionReducer,
 });
 
 export const store = createStore(combinnedReducer);

@@ -1,5 +1,5 @@
-import User from './User';
+import Portion from './Portion';
 
 export interface State {
-    user: User;
+    usablePortions: Portion[];
 }
