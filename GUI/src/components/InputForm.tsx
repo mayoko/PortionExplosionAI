@@ -5,6 +5,10 @@ const InputForm: React.FC = () => {
     return (
         <div className="InputForm">
             <PortionListContainer label="usable" title="usable portions" />
+            <PortionListContainer
+                label="discarded"
+                title="discarded portions"
+            />
         </div>
     );
 };
