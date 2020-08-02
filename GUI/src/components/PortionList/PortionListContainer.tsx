@@ -8,6 +8,11 @@ import {
     deleteUsablePortionAction,
 } from '../../actions/UsablePortionActions';
 import PortionList from './PortionList';
+import {
+    updateDiscardedPortionAction,
+    addDiscardedPortionAction,
+    deleteDiscardedPortionAction,
+} from '../../actions/DiscardedPortionActions';
 
 interface Props {
     title: string;
@@ -15,14 +20,30 @@ interface Props {
 }
 
 const PortionListContainer: React.FC<Props> = (props: Props) => {
-    const portions = useSelector<State, Portion[]>(
-        state => state.usablePortions,
+    const portions = useSelector<State, Portion[]>(state =>
+        props.label === 'usable'
+            ? state.usablePortions
+            : state.discardedPortions,
     );
     const dispatch = useDispatch();
+
+    const [updateAction, addAction, deleteAction] =
+        props.label === 'usable'
+            ? [
+                  updateUsablePortionAction,
+                  addUsablePortionAction,
+                  deleteUsablePortionAction,
+              ]
+            : [
+                  updateDiscardedPortionAction,
+                  addDiscardedPortionAction,
+                  deleteDiscardedPortionAction,
+              ];
+
     const updatePortion = useCallback(
         (index: number, portion: Partial<Portion>) => {
             dispatch(
-                updateUsablePortionAction({
+                updateAction({
                     index: index,
                     portion: portion,
                 }),
@@ -32,14 +53,14 @@ const PortionListContainer: React.FC<Props> = (props: Props) => {
     );
     const addPortion = useCallback(() => {
         dispatch(
-            addUsablePortionAction({
+            addAction({
                 type: PortionType.NONE,
                 count: 0,
             }),
         );
     }, []);
     const deletePortion = useCallback((index: number) => {
-        dispatch(deleteUsablePortionAction(index));
+        dispatch(deleteAction(index));
     }, []);
     return (
         <PortionList
