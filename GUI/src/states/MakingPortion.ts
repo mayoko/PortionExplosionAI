@@ -28,7 +28,12 @@ export const stringToMarbleColor = (colorString: string): MarbleColor => {
         : MarbleColor.NONE;
 };
 
+export interface ColorToCount {
+    color: MarbleColor;
+    count: number;
+}
+
 export default interface MakingPortion {
     type: PortionType;
-    restColors: { color: MarbleColor; count: number }[];
+    colorToCounts: ColorToCount[];
 }

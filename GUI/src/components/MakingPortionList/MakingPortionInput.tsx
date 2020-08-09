@@ -1,14 +1,20 @@
 import React from 'react';
-import { stringToPortionType } from '../../states/Portion';
+import { stringToPortionType, PortionType } from '../../states/Portion';
 import PortionTypeSelector from '../common/PortionTypeSelector';
 import CountInput from '../common/CountInput';
-import MakingPortion from '../../states/MakingPortion';
+import MakingPortion, { ColorToCount } from '../../states/MakingPortion';
 import MarbleColorSelector from '../common/MarbleColorSelector';
 
 interface Props {
     title: string;
     portion: MakingPortion;
-    onUpdatePortion: (portion: Partial<MakingPortion>) => void;
+    onUpdatePortionType: (portionType: PortionType) => void;
+    onUpdateColorToCount: (
+        mapIndex: number,
+        colorToCount: Partial<ColorToCount>,
+    ) => void;
+    onAddColorToCount: () => void;
+    onDeleteColorToCount: (index: number) => void;
 }
 
 const PortionInput: React.FC<Props> = props => {
@@ -18,40 +24,39 @@ const PortionInput: React.FC<Props> = props => {
             <PortionTypeSelector
                 portionType={props.portion.type}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                    props.onUpdatePortion({
-                        type: stringToPortionType(e.currentTarget.value),
-                    });
+                    props.onUpdatePortionType(
+                        stringToPortionType(e.currentTarget.value),
+                    );
                 }}
             />
             <div className="MakingPortionInput__restColorInput">
-                {props.portion.restColors.map((restColor, index) => (
+                {props.portion.colorToCounts.map((colorToCount, index) => (
                     <div key={index}>
                         <MarbleColorSelector
-                            color={restColor.color}
-                            onUpdate={color => {
-                                const newRestColors = [
-                                    ...props.portion.restColors,
-                                ];
-                                newRestColors[index].color = color;
-                                props.onUpdatePortion({
-                                    restColors: newRestColors,
-                                });
-                            }}
+                            color={colorToCount.color}
+                            onUpdate={color =>
+                                props.onUpdateColorToCount(index, {
+                                    color: color,
+                                })
+                            }
                         />
                         <CountInput
-                            count={restColor.count}
-                            onUpdate={count => {
-                                const newRestColors = [
-                                    ...props.portion.restColors,
-                                ];
-                                newRestColors[index].count = count;
-                                props.onUpdatePortion({
-                                    restColors: newRestColors,
-                                });
-                            }}
+                            count={colorToCount.count}
+                            onUpdate={count =>
+                                props.onUpdateColorToCount(index, {
+                                    count: count,
+                                })
+                            }
                         />
+                        <button
+                            onClick={() => props.onDeleteColorToCount(index)}>
+                            delete
+                        </button>
                     </div>
                 ))}
+                <div className="MakingPortionInput__restColorInput-add">
+                    <button onClick={props.onAddColorToCount}>Add</button>
+                </div>
             </div>
         </div>
     );

@@ -1,9 +1,18 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../states/State';
-import MakingPortion from '../../states/MakingPortion';
+import MakingPortion, {
+    ColorToCount,
+    MarbleColor,
+} from '../../states/MakingPortion';
 import MakingPortionList from './MakingPortionList';
-import { updateMakingPortionAction } from '../../actions/MakingPortionActions';
+import {
+    updateMakingPortionTypeAction,
+    updateMakingPortionColorToCountAction,
+    addMakingPortionColorToCountAction,
+    deleteMakingPortionColorToCountAction,
+} from '../../actions/MakingPortionActions';
+import { PortionType } from '../../states/Portion';
 
 interface Props {
     title: string;
@@ -15,12 +24,50 @@ const MakingPortionListContainer: React.FC<Props> = (props: Props) => {
     );
     const dispatch = useDispatch();
 
-    const updatePortion = useCallback(
-        (index: number, portion: Partial<MakingPortion>) => {
+    const updatePortionType = useCallback(
+        (index: number, portionType: PortionType) => {
             dispatch(
-                updateMakingPortionAction({
+                updateMakingPortionTypeAction({
                     index: index,
-                    portion: portion,
+                    portionType: portionType,
+                }),
+            );
+        },
+        [],
+    );
+    const updateColorToCount = useCallback(
+        (
+            index: number,
+            mapIndex: number,
+            colorToCount: Partial<ColorToCount>,
+        ) => {
+            dispatch(
+                updateMakingPortionColorToCountAction({
+                    index: index,
+                    mapIndex: mapIndex,
+                    colorToCount: colorToCount,
+                }),
+            );
+        },
+        [],
+    );
+    const addColorToCount = useCallback(
+        (index: number, colorToCount: ColorToCount) => {
+            dispatch(
+                addMakingPortionColorToCountAction({
+                    index: index,
+                    colorToCount: colorToCount,
+                }),
+            );
+        },
+        [],
+    );
+    const deleteColorToCount = useCallback(
+        (index: number, mapIndex: number) => {
+            dispatch(
+                deleteMakingPortionColorToCountAction({
+                    index: index,
+                    mapIndex: mapIndex,
                 }),
             );
         },
@@ -30,7 +77,15 @@ const MakingPortionListContainer: React.FC<Props> = (props: Props) => {
         <MakingPortionList
             title={props.title}
             portions={portions}
-            updatePortion={updatePortion}
+            updatePortionType={updatePortionType}
+            updateColorToCount={updateColorToCount}
+            addColorToCount={index => {
+                addColorToCount(index, {
+                    color: MarbleColor.NONE,
+                    count: 0,
+                });
+            }}
+            deleteColorToCount={deleteColorToCount}
         />
     );
 };
