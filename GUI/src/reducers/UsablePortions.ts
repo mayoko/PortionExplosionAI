@@ -28,8 +28,6 @@ const usablePortionReducer = reducerWithInitialState<Portion[]>(
     })
     .case(deleteUsablePortionAction, (state, payload) => {
         // payload is index
-        console.log(state);
-        console.log(payload);
         const nextState: Portion[] = [...state];
         nextState.splice(payload, 1);
         return nextState;
