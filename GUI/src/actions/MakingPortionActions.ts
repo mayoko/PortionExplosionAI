@@ -1,9 +1,26 @@
 import { actionCreatorFactory } from 'typescript-fsa';
-import MakingPortion from '../states/MakingPortion';
+import { PortionType } from '../states/Portion';
+import { ColorToCount } from '../states/MakingPortion';
 
 const actionCreator = actionCreatorFactory('usable-portion');
 
-export const updateMakingPortionAction = actionCreator<{
+export const updateMakingPortionTypeAction = actionCreator<{
     index: number;
-    portion: Partial<MakingPortion>;
-}>('update-making-portion');
+    portionType: PortionType;
+}>('update-making-portion-type');
+
+export const updateMakingPortionColorToCountAction = actionCreator<{
+    index: number;
+    mapIndex: number;
+    colorToCount: Partial<ColorToCount>;
+}>('update-making-portion-color-color-to-count');
+
+export const addMakingPortionColorToCountAction = actionCreator<{
+    index: number;
+    colorToCount: ColorToCount;
+}>('add-making-portion-color-color-to-count');
+
+export const deleteMakingPortionColorToCountAction = actionCreator<{
+    index: number;
+    mapIndex: number;
+}>('delete-making-portion-color-color-to-count');
