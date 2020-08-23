@@ -1,3 +1,5 @@
+import { MarbleColor } from './MarbleColor';
+
 export enum PortionType {
     PORTION_OF_WISDOM = 'Portion of Wisdom',
     PORTION_OF_MAGNETICAL_ATTRACTION = 'Portion of Magnetical Attraction',
@@ -9,24 +11,6 @@ export enum PortionType {
     FILTER_OF_LAVAMANCING = 'Filter of Lavamancing',
     NONE = 'NONE',
 }
-
-export enum MarbleColor {
-    RED = 'RED',
-    BLUE = 'BLUE',
-    YELLOW = 'YELLOW',
-    BLACK = 'BLACK',
-    NONE = 'NONE',
-}
-
-export const stringToMarbleColor = (colorString: string): MarbleColor => {
-    const matchedMarbleColor = Object.values(MarbleColor).filter(
-        value => value === colorString,
-    );
-
-    return matchedMarbleColor.length > 0
-        ? matchedMarbleColor[0]
-        : MarbleColor.NONE;
-};
 
 export interface ColorToCount {
     color: MarbleColor;

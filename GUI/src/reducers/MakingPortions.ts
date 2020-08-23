@@ -6,7 +6,8 @@ import {
     addMakingPortionColorToCountAction,
     deleteMakingPortionColorToCountAction,
 } from '../actions/MakingPortionActions';
-import MakingPortion, { MarbleColor } from '../states/MakingPortion';
+import MakingPortion from '../states/MakingPortion';
+import { MarbleColor } from '../states/MarbleColor';
 
 const initMakingPortions: MakingPortion[] = [
     {

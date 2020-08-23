@@ -1,5 +1,5 @@
 import React from 'react';
-import { MarbleColor, stringToMarbleColor } from '../../states/MakingPortion';
+import { MarbleColor, stringToMarbleColor } from '../../states/MarbleColor';
 
 interface Props {
     color: MarbleColor;

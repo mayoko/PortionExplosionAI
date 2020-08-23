@@ -1,6 +1,7 @@
 import React from 'react';
 import PortionListContainer from './PortionList/PortionListContainer';
 import MakingPortionListContainer from './MakingPortionList/MakingPortionListContainer';
+import SavingMarbleInputContainer from './SavingMarblesInput/SavingMarbleInputContainer';
 
 const InputForm: React.FC = () => {
     return (
@@ -11,6 +12,7 @@ const InputForm: React.FC = () => {
                 title="discarded portions"
             />
             <MakingPortionListContainer title="making portions" />
+            <SavingMarbleInputContainer title="saving marbles" />
         </div>
     );
 };

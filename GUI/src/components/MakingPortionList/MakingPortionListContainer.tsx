@@ -1,10 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../states/State';
-import MakingPortion, {
-    ColorToCount,
-    MarbleColor,
-} from '../../states/MakingPortion';
+import MakingPortion, { ColorToCount } from '../../states/MakingPortion';
+import { MarbleColor } from '../../states/MarbleColor';
 import MakingPortionList from './MakingPortionList';
 import {
     updateMakingPortionTypeAction,
